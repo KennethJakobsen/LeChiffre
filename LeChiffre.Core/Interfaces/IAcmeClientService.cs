@@ -7,6 +7,6 @@ namespace LeChiffre.Core.Interfaces
     public interface IAcmeClientService
     {
         IEnumerable<AuthorizationState> RequestVerificationChallenge(TargetApplication website);
-        AuthorizationState HandleVerificationChallenge(AuthorizationState authorizationState);
+        AuthorizationState RequestChallengeVerification(AuthorizationState authorizationState, AuthorizeChallenge challenge);
     }
 }

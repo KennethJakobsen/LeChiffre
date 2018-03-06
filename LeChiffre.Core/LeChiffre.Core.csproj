@@ -120,6 +120,7 @@
     <Compile Include="CertificateService.cs" />
     <Compile Include="Configuration.cs" />
     <Compile Include="ContainerRegistration.cs" />
+    <Compile Include="Plugins\DefaultPlugin.cs" />
     <Compile Include="Interfaces\IConfiguration.cs" />
     <Compile Include="Interfaces\ICertificateService.cs" />
     <Compile Include="Interfaces\IAcmeClientService.cs" />
@@ -127,6 +128,7 @@
     <Compile Include="Interfaces\IPlugin.cs" />
     <Compile Include="Models\TargetApplication.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
