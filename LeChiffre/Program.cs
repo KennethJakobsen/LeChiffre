@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using ACMESharp;
@@ -45,12 +44,12 @@ namespace LeChiffre
                 {
                     _logger.Information("Starting LeChiffre with the {pluginName} plugin, using Acme Server {acmeServer}", selectedPlugin.Name, configuration.AcmeServerBaseUri);
                     _logger.Information("Calling plugin's {method} method", "Setup");
-                    selectedPlugin.Setup();
+                    selectedPlugin.Setup(targetApplication);
                     _logger.Information("Calling plugin's {method} method", "RequestVerificationChallenge");
                     var authorizationStates = selectedPlugin.RequestVerificationChallenge(targetApplication).ToList();
                     foreach (var authorizationState in authorizationStates) {
                         _logger.Information("Calling plugin's {method} method", "HandleVerificationChallenge");
-                        selectedPlugin.HandleVerificationChallenge(authorizationState);
+                        selectedPlugin.HandleVerificationChallenge(targetApplication, authorizationState);
                     }
                     var allGood = authorizationStates.All(authorizationState => authorizationState.Status == AuthorizationState.STATUS_VALID);
                     if (allGood)

@@ -28,7 +28,7 @@ namespace LeChiffre.Core.Plugins
             _certificateService = certificateService;
         }
 
-        public void Setup()
+        public void Setup(TargetApplication application)
         { }
 
         public IEnumerable<AuthorizationState> RequestVerificationChallenge(TargetApplication application)
@@ -36,7 +36,7 @@ namespace LeChiffre.Core.Plugins
             return _acmeClientService.RequestVerificationChallenge(application);
         }
 
-        public AuthorizationState HandleVerificationChallenge(AuthorizationState authorizationState)
+        public AuthorizationState HandleVerificationChallenge(TargetApplication application, AuthorizationState authorizationState)
         {
             var challenge = _acmeClient.DecodeChallenge(authorizationState, AcmeProtocol.CHALLENGE_TYPE_HTTP);
             var httpChallenge = (HttpChallenge)challenge.Challenge;

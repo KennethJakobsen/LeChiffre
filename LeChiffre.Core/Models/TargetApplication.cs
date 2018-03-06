@@ -16,5 +16,8 @@ namespace LeChiffre.Core.Models
 
         [Option(HelpText = "When test is true the Acme staging server is used instead of the live one", Required = true)]
         public bool Test { get; set; }
+
+        [Option(HelpText = "Any string at all can be added here. Useful for passing in extra information to your plugin")]
+        public string AdditionalInformation { get; set; }
     }
 }

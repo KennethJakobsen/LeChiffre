@@ -8,9 +8,9 @@ namespace LeChiffre.Core.Interfaces
     {
         // A unique name for this plugin
         string Name { get; }
-        void Setup();
+        void Setup(TargetApplication application);
         IEnumerable<AuthorizationState> RequestVerificationChallenge(TargetApplication application);
-        AuthorizationState HandleVerificationChallenge(AuthorizationState authorizationState);
+        AuthorizationState HandleVerificationChallenge(TargetApplication application, AuthorizationState authorizationState);
         string GetCertificate(TargetApplication application);
         void ConfigureCertificate(TargetApplication application, string certificatePath);
     }
