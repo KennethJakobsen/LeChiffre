@@ -10,7 +10,7 @@ namespace LeChiffre.Core
 {
     public class Configuration : IConfiguration
     {
-        public Uri AcmeServerBaseUri { get; set; } = new Uri(System.Configuration.ConfigurationManager.AppSettings["baseUrl"]);
+        public Uri AcmeServerBaseUri { get; set; } = new Uri(System.Configuration.ConfigurationManager.AppSettings["baseUrlStaging"]);
         public string SignerEmail { get; set; } = System.Configuration.ConfigurationManager.AppSettings["signerEmail"];
         public string SignerFilename { get; set; } = "AcmeClientRS256Signer.txt";
         public string RegistrationFilename { get; set; } = "AcmeClientRegistration.txt";
@@ -18,7 +18,10 @@ namespace LeChiffre.Core
 
         public string GetBaseOutPutPath(TargetApplication targetApplication)
         {
-            var basePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, targetApplication.Hostnames.First());
+            if (targetApplication.Test == false)
+                AcmeServerBaseUri = new Uri(System.Configuration.ConfigurationManager.AppSettings["baseUrlLive"]);
+            
+            var basePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, AcmeServerBaseUri.Host, targetApplication.Hostnames.First());
             if (Directory.Exists(basePath) == false)
                 Directory.CreateDirectory(basePath);
             return basePath;

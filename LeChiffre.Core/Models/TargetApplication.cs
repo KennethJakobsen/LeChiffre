@@ -13,5 +13,8 @@ namespace LeChiffre.Core.Models
 
         [Option(HelpText = "The name of a plugin to use")]
         public string Plugin { get; set; }
+
+        [Option(HelpText = "When test is true the Acme staging server is used instead of the live one", Required = true)]
+        public bool Test { get; set; }
     }
 }

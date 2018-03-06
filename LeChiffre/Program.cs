@@ -38,21 +38,27 @@ namespace LeChiffre
                 _logger.Information("Setting up application");
                 var container = ContainerRegistration.SetupLightInjectContainer(targetApplication, _logger);
 
+                var configuration = container.GetInstance<IConfiguration>();
                 var plugins = container.GetAllInstances<IPlugin>();
-                var selectedPlugin = plugins.FirstOrDefault(p => p.Name == targetApplication.Plugin);
+                var selectedPlugin = plugins.FirstOrDefault(p => p.Name.ToLowerInvariant() == targetApplication.Plugin.ToLowerInvariant());
                 if (selectedPlugin != null)
                 {
-                    _logger.Information("Starting LeChiffre with the {pluginName} plugin", selectedPlugin.Name);
-
+                    _logger.Information("Starting LeChiffre with the {pluginName} plugin, using Acme Server {acmeServer}", selectedPlugin.Name, configuration.AcmeServerBaseUri);
+                    _logger.Information("Calling plugin's {method} method", "Setup");
                     selectedPlugin.Setup();
+                    _logger.Information("Calling plugin's {method} method", "RequestVerificationChallenge");
                     var authorizationStates = selectedPlugin.RequestVerificationChallenge(targetApplication).ToList();
-                    foreach (var authorizationState in authorizationStates)
+                    foreach (var authorizationState in authorizationStates) {
+                        _logger.Information("Calling plugin's {method} method", "HandleVerificationChallenge");
                         selectedPlugin.HandleVerificationChallenge(authorizationState);
+                    }
                     var allGood = authorizationStates.All(authorizationState => authorizationState.Status == AuthorizationState.STATUS_VALID);
                     if (allGood)
                     {
                         _logger.Information("All hostnames have been validated, generating certificates");
+                        _logger.Information("Calling plugin's {method} method", "GetCertificate");
                         var certificatePath = selectedPlugin.GetCertificate(targetApplication);
+                        _logger.Information("Calling plugin's {method} method", "ConfigureCertificate");
                         selectedPlugin.ConfigureCertificate(certificatePath);
                     }
                     else
