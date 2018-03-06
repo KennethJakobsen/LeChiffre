@@ -31,9 +31,9 @@ namespace LeChiffre.Core.Plugins
         public void Setup()
         { }
 
-        public IEnumerable<AuthorizationState> RequestVerificationChallenge(TargetApplication website)
+        public IEnumerable<AuthorizationState> RequestVerificationChallenge(TargetApplication application)
         {
-            return _acmeClientService.RequestVerificationChallenge(website);
+            return _acmeClientService.RequestVerificationChallenge(application);
         }
 
         public AuthorizationState HandleVerificationChallenge(AuthorizationState authorizationState)
@@ -98,7 +98,7 @@ namespace LeChiffre.Core.Plugins
             return _certificateService.GetCertificate(application);
         }
 
-        public void ConfigureCertificate(string certificatePath)
+        public void ConfigureCertificate(TargetApplication application, string certificatePath)
         { }
     }
 }

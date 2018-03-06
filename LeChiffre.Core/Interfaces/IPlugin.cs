@@ -12,6 +12,6 @@ namespace LeChiffre.Core.Interfaces
         IEnumerable<AuthorizationState> RequestVerificationChallenge(TargetApplication application);
         AuthorizationState HandleVerificationChallenge(AuthorizationState authorizationState);
         string GetCertificate(TargetApplication application);
-        void ConfigureCertificate(string certificatePath);
+        void ConfigureCertificate(TargetApplication application, string certificatePath);
     }
 }

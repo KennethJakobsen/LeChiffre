@@ -59,7 +59,7 @@ namespace LeChiffre
                         _logger.Information("Calling plugin's {method} method", "GetCertificate");
                         var certificatePath = selectedPlugin.GetCertificate(targetApplication);
                         _logger.Information("Calling plugin's {method} method", "ConfigureCertificate");
-                        selectedPlugin.ConfigureCertificate(certificatePath);
+                        selectedPlugin.ConfigureCertificate(targetApplication, certificatePath);
                     }
                     else
                     {
