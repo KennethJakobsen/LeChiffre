@@ -14,10 +14,10 @@ namespace LeChiffre.Core.Plugins
     {
         public string Name => "Default";
 
-        private ILogger _logger;
-        private IAcmeClientService _acmeClientService;
-        private AcmeClient _acmeClient;
-        private ICertificateService _certificateService;
+        private readonly ILogger _logger;
+        private readonly IAcmeClientService _acmeClientService;
+        private readonly AcmeClient _acmeClient;
+        private readonly ICertificateService _certificateService;
 
         public DefaultPlugin(ILogger logger, IAcmeClientService acmeClientService,
             AcmeClient acmeClient, ICertificateService certificateService)

@@ -75,8 +75,6 @@ namespace LeChiffre.Core
                     var crtPemFile = Path.Combine(certificateFolder, $"{certificateName}-crt.pem");
                     var chainPemFile = Path.Combine(certificateFolder, $"{certificateName}-chain.pem");
 
-                    var crtPfxFile = Path.Combine(certificateFolder, $"{certificateName}.pfx");
-
                     using (var fileStream = new FileStream(keyGenFile, FileMode.Create))
                         pkiTool.SavePrivateKey(rsaKeys, fileStream);
                     using (var fileStream = new FileStream(keyPemFile, FileMode.Create))
@@ -105,7 +103,7 @@ namespace LeChiffre.Core
                         intermediate.CopyTo(chain);
                     }
 
-                    crtPfxFile = Path.Combine(certificateFolder, $"{targetApplication.Hostnames.First()}.pfx");
+                    var crtPfxFile = Path.Combine(certificateFolder, $"{targetApplication.Hostnames.First()}.pfx");
 
                     _logger.Information("Saving certificate for hostname {host} and alternative hostnames {@altHostNames} to {crtPfxFile}",
                         targetApplication.Hostnames.First(), targetApplication.Hostnames.Skip(1), crtPfxFile);
