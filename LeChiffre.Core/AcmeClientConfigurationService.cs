@@ -29,7 +29,8 @@ namespace LeChiffre.Core
             var basePath = _configuration.GetBaseOutPutPath(targetApplication);
             ConfigureSigner(signer, basePath);
 
-            var acmeClient = new AcmeClient(_configuration.AcmeServerBaseUri, new AcmeServerDirectory(), signer);
+            var acmeServerBaseUri = _configuration.GetAcmeServerBaseUri(targetApplication);
+            var acmeClient = new AcmeClient(acmeServerBaseUri, new AcmeServerDirectory(), signer);
             acmeClient.Init();
             acmeClient.GetDirectory(saveRelative: true);
 

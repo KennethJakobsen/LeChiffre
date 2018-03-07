@@ -34,6 +34,13 @@ namespace LeChiffre
                 if (targetApplication == null)
                     return;
 
+                if (targetApplication.Debug)
+                {
+                    _logger.Information("Now would be a good time to attach a debugger.");
+                    _logger.Information("Press any key to continue...");
+                    Console.ReadKey();
+                }
+
                 _logger.Information("Setting up application");
                 var container = ContainerRegistration.SetupLightInjectContainer(targetApplication, _logger);
 
@@ -43,7 +50,8 @@ namespace LeChiffre
 
                 if (selectedPlugin != null)
                 {
-                    _logger.Information("Starting LeChiffre with the {pluginName} plugin, using Acme Server {acmeServer}", selectedPlugin.Name, configuration.AcmeServerBaseUri);
+                    var acmeServerBaseUri = configuration.GetAcmeServerBaseUri(targetApplication);
+                    _logger.Information("Starting LeChiffre with the {pluginName} plugin, using Acme Server {acmeServer}", selectedPlugin.Name, acmeServerBaseUri);
 
                     _logger.Information("Calling plugin's {method} method", "Setup");
                     selectedPlugin.Setup(targetApplication);

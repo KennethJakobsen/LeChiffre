@@ -95,7 +95,7 @@ namespace LeChiffre.Core
                         pkiTool.ExportCertificate(crt, EncodingFormat.PEM, target);
                     }
 
-                    var issuerCertificate = GetIssuerCertificate(certificateRequest, pkiTool, certificateFolder);
+                    var issuerCertificate = GetIssuerCertificate(certificateRequest, pkiTool, certificateFolder, targetApplication);
                     using (FileStream intermediate = new FileStream(issuerCertificate, FileMode.Open),
                         certificate = new FileStream(crtPemFile, FileMode.Open), chain = new FileStream(chainPemFile, FileMode.Create))
                     {
@@ -133,7 +133,8 @@ namespace LeChiffre.Core
             }
         }
 
-        private string GetIssuerCertificate(CertificateRequest certificate, IPkiTool cp, string certificateFolder)
+        private string GetIssuerCertificate(CertificateRequest certificate, IPkiTool cp,
+            string certificateFolder, TargetApplication targetApplication)
         {
             var linksEnum = certificate.Links;
             if (linksEnum == null)
@@ -149,7 +150,8 @@ namespace LeChiffre.Core
             {
                 using (var web = new WebClient())
                 {
-                    var uri = new Uri(_configuration.AcmeServerBaseUri, upLink.Uri);
+                    var acmeServerBaseUri = _configuration.GetAcmeServerBaseUri(targetApplication);
+                    var uri = new Uri(acmeServerBaseUri, upLink.Uri);
                     web.DownloadFile(uri, temporaryFileName);
                 }
 
