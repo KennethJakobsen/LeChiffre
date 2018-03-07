@@ -68,17 +68,17 @@ namespace LeChiffre.Core
                         _logger.Information("Authorization has updated status from {previousStatus} to {newStatus}",
                             authorizationState.Status, refreshedAuthorization.Status);
 
+                    // Update the status of the object we'll return eventually
+                    authorizationState.Status = refreshedAuthorization.Status;
+
                     if (refreshedAuthorization.Status != AuthorizationState.STATUS_VALID)
                     {
-                        // Update the state for the next retry
-                        authorizationState = refreshedAuthorization;
-
                         // We're not at valid yet, retry
                         continue;
                     }
 
                     // If we've successfully validated then return this new status
-                    if (authorizationState.Status == AuthorizationState.STATUS_VALID)
+                    if (refreshedAuthorization.Status == AuthorizationState.STATUS_VALID)
                         break;
                 }
             }
