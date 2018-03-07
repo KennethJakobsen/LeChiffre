@@ -63,7 +63,7 @@ namespace LeChiffre.Core
                         Thread.Sleep(retryTime);
 
                     var refreshedAuthorization = _acmeClient.RefreshIdentifierAuthorization(authorizationState);
-                    if (refreshedAuthorization.Status == AuthorizationState.STATUS_PENDING)
+                    if (refreshedAuthorization.Status != AuthorizationState.STATUS_VALID)
                         continue;
 
                     _logger.Information("Authorization has updated status from {previousStatus} to {newStatus}",
