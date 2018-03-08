@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/01/nuspec.xsd">
+  <metadata minClientVersion="3.4.4">
+    <id>LeChiffre.Core</id>
+    <version>0.0.0</version>
+    <title></title>
+    <authors>Sebastiaan Janssen</authors>
+    <owners>Sebastiaan Janssen</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <licenseUrl>https://github.com/nul800sebastiaan/LeChiffre/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/nul800sebastiaan/LeChiffre</projectUrl>
+    <iconUrl>https://raw.githubusercontent.com/nul800sebastiaan/LeChiffre/master/build/padlock.png</iconUrl>
+    <description>Use this library to build plugins for LeChiffre, a Let's Encrypt CLI implementation for Windows</description>
+    <summary>MIT License</summary>
+    <copyright>Copyright (c) 2018-Present Sebastiaan Janssen</copyright>
+    <dependencies>      
+      <dependency id="ACMESharp" version="[0.9.1.326,1.0.00)" />
+      <dependency id="Serilog" version="[2.6.0,3.0.0)" />	  
+	</dependencies>
+  </metadata>
+  <files>
+    <file src="..\src\LeChiffre.Core\bin\Release\LeChiffre.Core.dll" target="lib\net452\LeChiffre.Core.dll" />
+  </files>
+</package>

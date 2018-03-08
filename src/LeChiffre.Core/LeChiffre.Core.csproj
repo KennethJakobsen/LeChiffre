@@ -97,6 +97,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\SolutionInfo.cs">
+      <Link>Properties\SolutionInfo.cs</Link>
+    </Compile>  
     <Compile Include="AcmeClientService.cs" />
     <Compile Include="AcmeClientConfigurationService.cs" />
     <Compile Include="CertificateService.cs" />
