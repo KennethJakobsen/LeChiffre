@@ -16,9 +16,9 @@ The power is in the plugins for this. With a plugin you can automate the two mos
 
 ### That name though...?
 
-Ah yes, the name. While looking for a name that didn't include "Let's Encrypt", the "LE" abbreviation seemed nice. Of course anything that starts with "Le" has to be French. Talking to my colleague [Stéphane](github.com/zpqrtbnk/) to whom I suggested "Le Cryptage" - he said Le Chiffre would make more sense.
+Ah yes, the name. While looking for a name that didn't include "Let's Encrypt", the "LE" abbreviation seemed nice. Of course anything that starts with "Le" has to be French. Talking to [my colleague Stéphane](github.com/zpqrtbnk/) to whom I suggested "Le Cryptage" - he said Le Chiffre would make more sense.
 
-Sounded pretty cool! Not only that, here in Denmark we happen to have a famous actor named [Mad Mikkelsen](https://en.wikipedia.org/wiki/Mads_Mikkelsen) who played ["Le Chiffre" in the Bond movie Casino Royale](https://en.wikipedia.org/wiki/Le_Chiffre). Perfect fit.
+Sounded pretty cool! Not only that, here in Denmark we happen to have a famous actor named [Mads Mikkelsen](https://en.wikipedia.org/wiki/Mads_Mikkelsen) who played ["Le Chiffre" in the Bond movie Casino Royale](https://en.wikipedia.org/wiki/Le_Chiffre). Perfect fit.
 
 ## Getting started
 
