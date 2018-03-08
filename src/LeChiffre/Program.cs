@@ -45,48 +45,43 @@ namespace LeChiffre
                 var container = ContainerRegistration.SetupLightInjectContainer(targetApplication, _logger);
 
                 var configuration = container.GetInstance<IConfiguration>();
-                var plugins = container.GetAllInstances<IPlugin>();
-                var selectedPlugin = plugins.FirstOrDefault(p => string.Equals(p.Name, targetApplication.Plugin, StringComparison.InvariantCultureIgnoreCase));
+                var plugins = container.GetAllInstances<IPlugin>().ToList();
+                // Get the plugin from the command line args, if it can't be found, use the Default one
+                var selectedPlugin = plugins.FirstOrDefault(p => string.Equals(p.Name, targetApplication.Plugin, StringComparison.InvariantCultureIgnoreCase)) ??
+                                     plugins.FirstOrDefault(p => p.Name == "Default");
 
-                if (selectedPlugin != null)
+                var acmeServerBaseUri = configuration.GetAcmeServerBaseUri(targetApplication);
+                _logger.Information("Starting LeChiffre with the {pluginName} plugin, using Acme Server {acmeServer}", selectedPlugin.Name, acmeServerBaseUri);
+
+                _logger.Information("Calling plugin's {method} method", "Setup");
+                selectedPlugin.Setup(targetApplication);
+
+                _logger.Information("Calling plugin's {method} method", "RequestVerificationChallenge");
+                var authorizationStates = selectedPlugin.RequestVerificationChallenge(targetApplication).ToList();
+
+                foreach (var authorizationState in authorizationStates)
                 {
-                    var acmeServerBaseUri = configuration.GetAcmeServerBaseUri(targetApplication);
-                    _logger.Information("Starting LeChiffre with the {pluginName} plugin, using Acme Server {acmeServer}", selectedPlugin.Name, acmeServerBaseUri);
+                    _logger.Information("Calling plugin's {method} method", "HandleVerificationChallenge");
+                    selectedPlugin.HandleVerificationChallenge(targetApplication, authorizationState);
+                }
 
-                    _logger.Information("Calling plugin's {method} method", "Setup");
-                    selectedPlugin.Setup(targetApplication);
+                var allGood = authorizationStates.All(authorizationState => authorizationState.Status == AuthorizationState.STATUS_VALID);
+                if (allGood)
+                {
+                    _logger.Information("All hostnames have been validated, generating certificates");
+                    _logger.Information("Calling plugin's {method} method", "GetCertificate");
+                    var certificatePath = selectedPlugin.GetCertificate(targetApplication);
 
-                    _logger.Information("Calling plugin's {method} method", "RequestVerificationChallenge");
-                    var authorizationStates = selectedPlugin.RequestVerificationChallenge(targetApplication).ToList();
-
-                    foreach (var authorizationState in authorizationStates)
-                    {
-                        _logger.Information("Calling plugin's {method} method", "HandleVerificationChallenge");
-                        selectedPlugin.HandleVerificationChallenge(targetApplication, authorizationState);
-                    }
-
-                    var allGood = authorizationStates.All(authorizationState => authorizationState.Status == AuthorizationState.STATUS_VALID);
-                    if (allGood)
-                    {
-                        _logger.Information("All hostnames have been validated, generating certificates");
-                        _logger.Information("Calling plugin's {method} method", "GetCertificate");
-                        var certificatePath = selectedPlugin.GetCertificate(targetApplication);
-
-                        _logger.Information("Calling plugin's {method} method", "ConfigureCertificate");
-                        selectedPlugin.ConfigureCertificate(targetApplication, certificatePath);
-                    }
-                    else
-                    {
-                        var badStates = authorizationStates.Where(authorizationState => authorizationState.Status != AuthorizationState.STATUS_VALID);
-                        foreach (var state in badStates)
-                        {
-                            _logger.Warning("Can't get certificate, the authorization state for Id {identifier} is {authorizationState}", state.Identifier, state.Status);
-                        }
-                    }
+                    _logger.Information("Calling plugin's {method} method", "ConfigureCertificate");
+                    selectedPlugin.ConfigureCertificate(targetApplication, certificatePath);
                 }
                 else
                 {
-                    _logger.Information("Could not find plugin with name {pluginName}", targetApplication.Plugin);
+                    var badStates = authorizationStates.Where(authorizationState => authorizationState.Status != AuthorizationState.STATUS_VALID);
+                    foreach (var state in badStates)
+                    {
+                        _logger.Warning("Can't get certificate, the authorization state for Id {identifier} is {authorizationState}", state.Identifier, state.Status);
+                    }
                 }
             }
             catch (Exception e)
