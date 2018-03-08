@@ -321,4 +321,7 @@ ASALocalRun/
 
 # MSBuild Binary and Structured Log
 *.binlog
+
+# Build output
 build/tools/
+build/*.zip
